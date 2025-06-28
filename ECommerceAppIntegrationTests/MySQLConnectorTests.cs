@@ -1,6 +1,10 @@
+using MySql.Data.MySqlClient;
+using Utils.MySQLInterface;
+
 namespace ECommerceAppIntegrationTests
 {
-    public class IntegrationTest1
+    [TestFixture]
+    public class MySQLConnectorTests
     {
         // Instructions:
         // 1. Add a project reference to the target AppHost project, e.g.:
@@ -32,5 +36,26 @@ namespace ECommerceAppIntegrationTests
         //     // Assert
         //     Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         // }
+
+        [Test]
+        public async Task CreateConnection_CreatedSuccessfullty_NoExceptions()
+        {
+            // Arrange
+            string connectionFilePath = @"MySQL_connection.xml";
+            var connector = new MySQLConnector(connectionFilePath);
+            MySqlConnection connection;
+
+            // Act
+            try { connection = await connector.CreateConnection(); }
+
+            // Assert
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Assert.Fail();
+            }
+
+            Assert.Pass();
+        }
     }
 }

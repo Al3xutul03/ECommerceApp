@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+  <mySQLConnection>
+    <server>localhost</server>
+    <uid>root</uid>
+    <pwd></pwd>
+    <database>ecommerce_app</database>
+  </mySQLConnection>
