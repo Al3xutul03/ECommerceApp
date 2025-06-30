@@ -16,8 +16,8 @@ namespace Utils.MySQLInterface
         public SqlTable SqlTable { get { return sqlTable; } set { sqlTable = value; } }
         private SqlTable sqlTable;
 
-        [AllowNull] private IEnumerable<SqlColumn> sortColumns;
-        [AllowNull] private IEnumerable<SqlColumn> selectColumns;
+        private IEnumerable<SqlColumn> sortColumns;
+        private IEnumerable<SqlColumn> selectColumns;
         private SortType sortType;
 
 
@@ -39,10 +39,15 @@ namespace Utils.MySQLInterface
             { SortType.Descending, "DESC" }
         };
 
-        public MySQLParser(MySqlConnection connection, SqlTable sqlTable)
+        public MySQLParser(SqlTable sqlTable)
         {
-            this.connection = connection;
+            
             this.sqlTable = sqlTable;
+        }
+
+        public async Task ConnectAsync(MySQLConnector connector)
+        {
+            this.connection = await connector.CreateConnection();
         }
 
         public void Select(IEnumerable<SqlColumn> columns) { this.selectColumns = columns; }

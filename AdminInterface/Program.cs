@@ -8,6 +8,8 @@ namespace AdminInterface
 {
     internal static class Program
     {
+        public static string SQLConnectionPath = "MySQL_connection.xml";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +18,14 @@ namespace AdminInterface
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            using (LoginForm loginForm = new LoginForm())
+            {
+                if (loginForm.ShowDialog() == DialogResult.OK)
+                {
+                    Application.Run(new Form1());
+                }
+            }
         }
     }
 }
