@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminInterface", "AdminInterface\AdminInterface.csproj", "{7CB519C2-064B-463F-9DC4-A240E8A54797}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterface", "UserInterface\UserInterface.csproj", "{3B9561DD-AAF9-47B9-9F86-8A83D64409BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{622FDF62-18A8-4FCB-8854-4EECBBA7BA14} = {622FDF62-18A8-4FCB-8854-4EECBBA7BA14}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{622FDF62-18A8-4FCB-8854-4EECBBA7BA14}"
 EndProject
