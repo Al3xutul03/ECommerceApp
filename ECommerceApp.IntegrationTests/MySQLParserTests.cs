@@ -15,9 +15,9 @@ namespace ECommerceApp.IntegrationTests
             var connector = new MySQLConnector(connectionFilePath);
 
             // Act
-            var parser = new MySQLParser(SqlTable.AdminInfo);
-            await parser.ConnectAsync(connector);
-            DataTable dt = await parser.GetTable();
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            DataTable dt = await parser.GetTable(SqlTable.AdminInfo);
 
             // Assert
             if (dt.TableName != "admin_info") Assert.Fail();
@@ -31,9 +31,9 @@ namespace ECommerceApp.IntegrationTests
             var connector = new MySQLConnector(connectionFilePath);
 
             // Act
-            var parser = new MySQLParser(SqlTable.UserInfo);
-            await parser.ConnectAsync(connector);
-            DataTable dt = await parser.GetTable();
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            DataTable dt = await parser.GetTable(SqlTable.UserInfo);
 
             // Assert
             if (dt.TableName != "user_info") Assert.Fail();
@@ -47,11 +47,12 @@ namespace ECommerceApp.IntegrationTests
             var connector = new MySQLConnector(connectionFilePath);
 
             // Act
-            var parser = new MySQLParser(SqlTable.AdminInfo);
-            await parser.ConnectAsync(connector);
-            parser.Select(new List<SqlColumn> { SqlColumn.Username, SqlColumn.ID });
-            parser.SortBy(new List<SqlColumn> { SqlColumn.Username }, SortType.Descending);
-            DataTable dt = await parser.GetTable();
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            DataTable dt = await parser.GetTable(SqlTable.AdminInfo,
+                selectColumns: new List<SqlColumn> { SqlColumn.Username, SqlColumn.ID },
+                sortbyColumns: new List<SqlColumn> { SqlColumn.Username },
+                SortType.Descending);
 
             // Assert
             if (dt.TableName != "admin_info") Assert.Fail();
@@ -65,11 +66,12 @@ namespace ECommerceApp.IntegrationTests
             var connector = new MySQLConnector(connectionFilePath);
 
             // Act
-            var parser = new MySQLParser(SqlTable.UserInfo);
-            await parser.ConnectAsync(connector);
-            parser.Select(new List<SqlColumn> { SqlColumn.Username });
-            parser.SortBy(new List<SqlColumn> { SqlColumn.ID }, SortType.Descending);
-            DataTable dt = await parser.GetTable();
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            DataTable dt = await parser.GetTable(SqlTable.UserInfo,
+                selectColumns: new List<SqlColumn> { SqlColumn.Username },
+                sortbyColumns: new List<SqlColumn> { SqlColumn.ID },
+                SortType.Descending);
 
             // Assert
             if (dt.TableName != "user_info") Assert.Fail();

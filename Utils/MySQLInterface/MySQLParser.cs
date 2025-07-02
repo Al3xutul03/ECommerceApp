@@ -12,14 +12,7 @@ namespace Utils.MySQLInterface
     public class MySQLParser
     {
         private MySqlConnection connection;
-        
-        public SqlTable SqlTable { get { return sqlTable; } set { sqlTable = value; } }
-        private SqlTable sqlTable;
-
-        private IEnumerable<SqlColumn> sortColumns;
-        private IEnumerable<SqlColumn> selectColumns;
-        private SortType sortType;
-
+        private MySQLConnector connector;
 
         private static Dictionary<SqlTable, string> tableStrings = new Dictionary<SqlTable, string>
         {
@@ -39,28 +32,20 @@ namespace Utils.MySQLInterface
             { SortType.Descending, "DESC" }
         };
 
-        public MySQLParser(SqlTable sqlTable)
+        public MySQLParser(MySQLConnector connector)
         {
-            
-            this.sqlTable = sqlTable;
+            this.connector = connector;
         }
 
-        public async Task ConnectAsync(MySQLConnector connector)
+        public async Task ConnectAsync()
         {
             this.connection = await connector.CreateConnection();
         }
 
-        public void Select(IEnumerable<SqlColumn> columns) { this.selectColumns = columns; }
-
-        public void SortBy(IEnumerable<SqlColumn> columns, SortType sortType)
+        public async Task<DataTable> GetTable(SqlTable sqlTable,
+            IEnumerable<SqlColumn> selectColumns, IEnumerable<SqlColumn> sortbyColumns, SortType sortType)
         {
-            this.sortColumns = columns;
-            this.sortType = sortType;
-        }
-
-        public async Task<DataTable> GetTable()
-        {
-            string commandString = BuildCommandString();
+            string commandString = BuildCommandString(sqlTable, selectColumns, sortbyColumns, sortType);
             MySqlCommand command = new MySqlCommand(commandString, connection);
 
             MySqlDataReader dr = await command.ExecuteReaderAsync(CommandBehavior.Default);
@@ -70,7 +55,20 @@ namespace Utils.MySQLInterface
             return dt;
         }
 
-        private string BuildCommandString()
+        public async Task<DataTable> GetTable(SqlTable sqlTable)
+        {
+            string commandString = BuildCommandString(sqlTable, null, null, SortType.None);
+            MySqlCommand command = new MySqlCommand(commandString, connection);
+
+            MySqlDataReader dr = await command.ExecuteReaderAsync(CommandBehavior.Default);
+            DataTable dt = new DataTable();
+            dt.Load(dr);
+
+            return dt;
+        }
+
+        private string BuildCommandString(SqlTable sqlTable,
+            IEnumerable<SqlColumn> selectColumns, IEnumerable<SqlColumn> sortbyColumns, SortType sortType)
         {
             string commandString = "SELECT ";
             if (selectColumns == null || selectColumns.Count() == 0) { commandString += '*'; }
@@ -83,10 +81,10 @@ namespace Utils.MySQLInterface
             }
 
             commandString += $" FROM {tableStrings[sqlTable]} ";
-            if (sortColumns != null && sortColumns.Count() > 0)
+            if (sortbyColumns != null && sortbyColumns.Count() > 0)
             {
                 commandString += "ORDER BY ";
-                var enumerator = sortColumns.GetEnumerator();
+                var enumerator = sortbyColumns.GetEnumerator();
                 enumerator.MoveNext();
                 commandString += columnStrings[enumerator.Current];
                 while (enumerator.MoveNext()) { commandString += $", {columnStrings[enumerator.Current]}"; }

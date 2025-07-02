@@ -49,8 +49,7 @@ namespace UserInterface
                 return;
             }
 
-            parser.SqlTable = SqlTable.UserInfo;
-            DataTable userTable = await parser.GetTable();
+            DataTable userTable = await parser.GetTable(SqlTable.UserInfo);
 
             bool exists = false;
             foreach (DataRow row in userTable.Rows)

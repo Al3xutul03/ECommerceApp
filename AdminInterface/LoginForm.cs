@@ -24,7 +24,7 @@ namespace AdminInterface
             InitializeComponent();
 
             connector = new MySQLConnector(Program.SQLConnectionPath);
-            parser = new MySQLParser(SqlTable.AdminInfo);
+            parser = new MySQLParser(connector);
         }
 
         private async void btn_confirm_Click(object sender, EventArgs e)
@@ -32,8 +32,8 @@ namespace AdminInterface
             string username = tb_username.Text;
             string password = tb_password.Text;
             
-            await parser.ConnectAsync(connector);
-            DataTable adminTable = await parser.GetTable();
+            await parser.ConnectAsync();
+            DataTable adminTable = await parser.GetTable(SqlTable.AdminInfo);
 
             bool exists = false;
             foreach ( DataRow row in adminTable.Rows )
