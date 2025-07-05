@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,11 +20,11 @@ namespace AdminInterface
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            using (LoginForm loginForm = new LoginForm())
+            using (AdminLoginForm loginForm = new AdminLoginForm())
             {
                 if (loginForm.ShowDialog() == DialogResult.OK)
                 {
-                    Application.Run(new Form1());
+                    Application.Run(new MainAdminWindow(loginForm.LoggedAccount, loginForm.Parser));
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace UserInterface
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            using (LoginForm loginForm = new LoginForm())
+            using (UserLoginForm loginForm = new UserLoginForm())
             {
                 if (loginForm.ShowDialog() == DialogResult.OK)
                 {

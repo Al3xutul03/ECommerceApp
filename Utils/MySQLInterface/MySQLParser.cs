@@ -17,13 +17,15 @@ namespace Utils.MySQLInterface
         private static Dictionary<SqlTable, string> tableStrings = new Dictionary<SqlTable, string>
         {
             { SqlTable.AdminInfo, "admin_info" },
-            { SqlTable.UserInfo, "user_info" }
+            { SqlTable.UserInfo, "user_info" },
+            { SqlTable.ProductInfo, "product_info" }
         };
 
         private static Dictionary<SqlColumn, string> columnStrings = new Dictionary<SqlColumn, string>
         {
             { SqlColumn.ID, "id" },
             { SqlColumn.Username, "username" },
+            { SqlColumn.ProductName, "product_name" }
         };
 
         private static Dictionary<SortType, string> sortStrings = new Dictionary<SortType, string>
@@ -45,7 +47,7 @@ namespace Utils.MySQLInterface
         public async Task<DataTable> GetTable(SqlTable sqlTable,
             IEnumerable<SqlColumn> selectColumns, IEnumerable<SqlColumn> sortbyColumns, SortType sortType)
         {
-            string commandString = BuildCommandString(sqlTable, selectColumns, sortbyColumns, sortType);
+            string commandString = BuildSelectString(sqlTable, selectColumns, sortbyColumns, sortType);
             MySqlCommand command = new MySqlCommand(commandString, connection);
 
             MySqlDataReader dr = await command.ExecuteReaderAsync(CommandBehavior.Default);
@@ -57,7 +59,7 @@ namespace Utils.MySQLInterface
 
         public async Task<DataTable> GetTable(SqlTable sqlTable)
         {
-            string commandString = BuildCommandString(sqlTable, null, null, SortType.None);
+            string commandString = BuildSelectString(sqlTable, null, null, SortType.None);
             MySqlCommand command = new MySqlCommand(commandString, connection);
 
             MySqlDataReader dr = await command.ExecuteReaderAsync(CommandBehavior.Default);
@@ -67,7 +69,16 @@ namespace Utils.MySQLInterface
             return dt;
         }
 
-        private string BuildCommandString(SqlTable sqlTable,
+        public async Task<int> DeleteRow(SqlTable sqlTable, int id)
+        {
+            string commandString = BuildDeleteString(sqlTable, id);
+            MySqlCommand command = new MySqlCommand(commandString, connection);
+
+            int affectedRows = await command.ExecuteNonQueryAsync();
+            return affectedRows;
+        }
+
+        private string BuildSelectString(SqlTable sqlTable,
             IEnumerable<SqlColumn> selectColumns, IEnumerable<SqlColumn> sortbyColumns, SortType sortType)
         {
             string commandString = "SELECT ";
@@ -88,16 +99,23 @@ namespace Utils.MySQLInterface
                 enumerator.MoveNext();
                 commandString += columnStrings[enumerator.Current];
                 while (enumerator.MoveNext()) { commandString += $", {columnStrings[enumerator.Current]}"; }
-            }
+                commandString += $" {sortStrings[sortType]}";
+            }  
             commandString += ';';
 
             return commandString;
         }
+
+        private string BuildDeleteString(SqlTable sqlTable, int id)
+        {
+            string commandString = $"DELETE FROM {tableStrings[sqlTable]} WHERE id = {id};";
+            return commandString;
+        }
     }
 
-    public enum SqlTable { AdminInfo, UserInfo }
+    public enum SqlTable { AdminInfo, UserInfo, ProductInfo }
 
-    public enum SqlColumn { ID, Username }
+    public enum SqlColumn { ID, Username, ProductName }
 
     public enum SortType { None, Ascending, Descending }
 }
