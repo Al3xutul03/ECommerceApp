@@ -52,6 +52,18 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditAccountWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditAccountWindow.Designer.cs">
+      <DependentUpon>EditAccountWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddAccountWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddAccountWindow.Designer.cs">
+      <DependentUpon>AddAccountWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainAdminWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +78,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddAccountWindow.resx">
+      <DependentUpon>AddAccountWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditAccountWindow.resx">
+      <DependentUpon>EditAccountWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainAdminWindow.resx">
       <DependentUpon>MainAdminWindow.cs</DependentUpon>
     </EmbeddedResource>

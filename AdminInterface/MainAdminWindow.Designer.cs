@@ -80,14 +80,14 @@
             this.tsmi_view});
             this.ms_app_tabs.Location = new System.Drawing.Point(0, 0);
             this.ms_app_tabs.Name = "ms_app_tabs";
-            this.ms_app_tabs.Size = new System.Drawing.Size(921, 30);
+            this.ms_app_tabs.Size = new System.Drawing.Size(921, 28);
             this.ms_app_tabs.TabIndex = 0;
             this.ms_app_tabs.Text = "menuStrip1";
             // 
             // tsmi_file
             // 
             this.tsmi_file.Name = "tsmi_file";
-            this.tsmi_file.Size = new System.Drawing.Size(46, 26);
+            this.tsmi_file.Size = new System.Drawing.Size(46, 24);
             this.tsmi_file.Text = "File";
             // 
             // tsmi_view
@@ -97,7 +97,7 @@
             this.tsmi_view_users,
             this.tsmi_view_products});
             this.tsmi_view.Name = "tsmi_view";
-            this.tsmi_view.Size = new System.Drawing.Size(55, 26);
+            this.tsmi_view.Size = new System.Drawing.Size(55, 24);
             this.tsmi_view.Text = "View";
             // 
             // tsmi_view_admins
@@ -129,27 +129,27 @@
             this.tsl_connected_as,
             this.tss_separator,
             this.tsl_current_view});
-            this.ts_app.Location = new System.Drawing.Point(0, 30);
+            this.ts_app.Location = new System.Drawing.Point(0, 28);
             this.ts_app.Name = "ts_app";
-            this.ts_app.Size = new System.Drawing.Size(921, 31);
+            this.ts_app.Size = new System.Drawing.Size(921, 25);
             this.ts_app.TabIndex = 0;
             this.ts_app.Text = "toolStrip1";
             // 
             // tsl_connected_as
             // 
             this.tsl_connected_as.Name = "tsl_connected_as";
-            this.tsl_connected_as.Size = new System.Drawing.Size(107, 28);
+            this.tsl_connected_as.Size = new System.Drawing.Size(107, 22);
             this.tsl_connected_as.Text = "Connected As: ";
             // 
             // tss_separator
             // 
             this.tss_separator.Name = "tss_separator";
-            this.tss_separator.Size = new System.Drawing.Size(6, 31);
+            this.tss_separator.Size = new System.Drawing.Size(6, 25);
             // 
             // tsl_current_view
             // 
             this.tsl_current_view.Name = "tsl_current_view";
-            this.tsl_current_view.Size = new System.Drawing.Size(100, 28);
+            this.tsl_current_view.Size = new System.Drawing.Size(100, 22);
             this.tsl_current_view.Text = "Current View: ";
             // 
             // gb_selected
@@ -423,7 +423,6 @@
             this.Name = "MainAdminWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ECommerceApp Admin Interface";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.MainAdminWindow_Load);
             this.ms_app_tabs.ResumeLayout(false);
             this.ms_app_tabs.PerformLayout();

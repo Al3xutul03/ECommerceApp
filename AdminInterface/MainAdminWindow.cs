@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,8 @@ namespace AdminInterface
         private Account loggedAccount;
         private MySQLParser parser;
         private CurrentView currentView;
+        private int selectedId;
+        private object selectedItem;
 
         private Dictionary<CurrentView, SqlTable> viewToTable = new Dictionary<CurrentView, SqlTable>
         {
@@ -44,10 +47,11 @@ namespace AdminInterface
             };
         }
 
-        private void SetCurrentView(CurrentView currentView)
+        private async Task SetCurrentView(CurrentView currentView)
         {
             this.currentView = currentView;
             tsl_current_view.Text = "Current View: " + currentView.ToString();
+            itemTables[currentView] = (await parser.GetTable(viewToTable[currentView])).Rows;
 
             var bindingSource = new BindingSource();
             List<object> list = new List<object>();
@@ -72,11 +76,7 @@ namespace AdminInterface
         {
             tsl_connected_as.Text += loggedAccount.username;
 
-            itemTables.Add(CurrentView.Admins, (await parser.GetTable(SqlTable.AdminInfo)).Rows);
-            itemTables.Add(CurrentView.Users, (await parser.GetTable(SqlTable.UserInfo)).Rows);
-            itemTables.Add(CurrentView.Products, (await parser.GetTable(SqlTable.ProductInfo)).Rows);
-
-            SetCurrentView(CurrentView.Admins);
+            await SetCurrentView(CurrentView.Admins);
         }
 
         private void ChangeSelectedToAccounts()
@@ -151,26 +151,52 @@ namespace AdminInterface
             lb_category.Text = string.Empty;
         }
 
-        private void btn_edit_selected_Click(object sender, EventArgs e)
+        private async void btn_edit_selected_Click(object sender, EventArgs e)
         {
-
+            int affectedRows;
+            if (selectedItem is Account)
+            {
+                using (EditAccountWindow window = new EditAccountWindow((Account)selectedItem))
+                {
+                    if (window.ShowDialog() == DialogResult.OK)
+                    {
+                        affectedRows = await parser.UpdateRow(viewToTable[currentView], window.Account);
+                        if (affectedRows != 1) { Console.WriteLine($"Something went wrong while editing item (ID: {selectedId})"); }
+                        await SetCurrentView(currentView);
+                    }
+                }
+            }
         }
 
-        private void btn_delete_selected_Click(object sender, EventArgs e)
+        private async void btn_delete_selected_Click(object sender, EventArgs e)
         {
-
+            int affectedRows = await parser.DeleteRow(viewToTable[currentView], selectedId);
+            if (affectedRows != 1) { Console.WriteLine($"Something went wrong while deleting item (ID: {selectedId})"); }
+            await SetCurrentView(currentView);
         }
 
-        private void btn_add_item_Click(object sender, EventArgs e)
+        private async void btn_add_item_Click(object sender, EventArgs e)
         {
-
+            int affectedRows;
+            if (selectedItem is Account)
+            {
+                using (AddAccountWindow window = new AddAccountWindow())
+                {
+                    if (window.ShowDialog() == DialogResult.OK)
+                    {
+                        affectedRows = await parser.InsertRow(viewToTable[currentView], window.Account);
+                        if (affectedRows != 1) { Console.WriteLine($"Something went wrong while editing item (ID: {selectedId})"); }
+                        await SetCurrentView(currentView);
+                    }
+                }
+            }
         }
 
-        private void tsmi_view_admins_Click(object sender, EventArgs e) { SetCurrentView(CurrentView.Admins); }
+        private async void tsmi_view_admins_Click(object sender, EventArgs e) { await SetCurrentView(CurrentView.Admins); }
 
-        private void tsmi_view_users_Click(object sender, EventArgs e) { SetCurrentView(CurrentView.Users); }
+        private async void tsmi_view_users_Click(object sender, EventArgs e) { await SetCurrentView(CurrentView.Users); }
 
-        private void tsmi_view_products_Click(object sender, EventArgs e) { SetCurrentView(CurrentView.Products); }
+        private async void tsmi_view_products_Click(object sender, EventArgs e) { await SetCurrentView(CurrentView.Products); }
 
         private void list_database_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -185,6 +211,8 @@ namespace AdminInterface
                 lb_username.Text = account.username;
                 lb_email.Text = account.email;
                 lb_creation_date.Text = account.creation_date;
+
+                selectedId = account.id;
             }
             if (currentView == CurrentView.Products)
             {
@@ -197,7 +225,11 @@ namespace AdminInterface
                 lb_category.Text = product.category;
                 lb_price.Text = product.price.ToString();
                 lb_available_stock.Text = product.stock.ToString();
+
+                selectedId = product.id;
             }
+
+            selectedItem = selected;
         }
     }
 
