@@ -16,13 +16,22 @@ namespace Utils.DataFormats
         public string password;
         public string creation_date;
 
+        public Account(int id, string username, string email, string password, string creation_date)
+        {
+            this.id = id;
+            this.username = username;
+            this.email = email;
+            this.password = password;
+            this.creation_date = creation_date;
+        }
+
         public Account(DataRow row)
         {
             this.id = (int)row[0];
             this.username = (string)row[1];
             this.email = (string)row[2];
             this.password = (string)row[3];
-            this.creation_date = ((DateTime)row[4]).ToShortDateString();
+            this.creation_date = ((DateTime)row[4]).ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         public override string ToString()
@@ -53,6 +62,17 @@ namespace Utils.DataFormats
         public int stock;
         public string category;
         public string description;
+
+        public Product(int id, string name, string producer, float price, int stock, string category, string description)
+        {
+            this.id = id;
+            this.name = name;
+            this.producer = producer;
+            this.price = price;
+            this.stock = stock;
+            this.category = category;
+            this.description = description;
+        }
 
         public Product(DataRow row)
         {

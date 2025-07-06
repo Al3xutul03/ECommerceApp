@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
+using System.Globalization;
+using Utils.DataFormats;
 using Utils.MySQLInterface;
 
 namespace ECommerceApp.IntegrationTests
@@ -113,7 +115,7 @@ namespace ECommerceApp.IntegrationTests
         }
 
         [TestMethod]
-        public async Task DeleteRow_AdminTable_FullTable()
+        public async Task DeleteRow_AdminTable_OneChange()
         {
             // Arrange
             string connectionFilePath = @"MySQL_connection.xml";
@@ -129,7 +131,7 @@ namespace ECommerceApp.IntegrationTests
         }
 
         [TestMethod]
-        public async Task DeleteRow_UserTable_FullTable()
+        public async Task DeleteRow_UserTable_OneChange()
         {
             // Arrange
             string connectionFilePath = @"MySQL_connection.xml";
@@ -145,7 +147,7 @@ namespace ECommerceApp.IntegrationTests
         }
 
         [TestMethod]
-        public async Task DeleteRow_ProductTable_FullTable()
+        public async Task DeleteRow_ProductTable_OneChange()
         {
             // Arrange
             string connectionFilePath = @"MySQL_connection.xml";
@@ -155,6 +157,108 @@ namespace ECommerceApp.IntegrationTests
             var parser = new MySQLParser(connector);
             await parser.ConnectAsync();
             int affectedRows = await parser.DeleteRow(SqlTable.ProductInfo, 226);
+
+            // Assert
+            if (affectedRows != 1) Assert.Fail();
+        }
+
+        [TestMethod]
+        public async Task InsertRow_AdminTable_OneChange()
+        {
+            // Arrange
+            string connectionFilePath = @"MySQL_connection.xml";
+            var connector = new MySQLConnector(connectionFilePath);
+            var account = new Account(100, "Test", "www.test@email.com", "test_pswd", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+            // Act
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            int affectedRows = await parser.InsertRow(SqlTable.AdminInfo, account);
+
+            // Assert
+            if (affectedRows != 1) Assert.Fail();
+        }
+
+        [TestMethod]
+        public async Task InsertRow_UserTable_OneChange()
+        {
+            // Arrange
+            string connectionFilePath = @"MySQL_connection.xml";
+            var connector = new MySQLConnector(connectionFilePath);
+            var account = new Account(100, "Test", "www.test@email.com", "test_pswd", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+            // Act
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            int affectedRows = await parser.InsertRow(SqlTable.UserInfo, account);
+
+            // Assert
+            if (affectedRows != 1) Assert.Fail();
+        }
+
+        [TestMethod]
+        public async Task InsertRow_ProductTable_OneChange()
+        {
+            // Arrange
+            string connectionFilePath = @"MySQL_connection.xml";
+            var connector = new MySQLConnector(connectionFilePath);
+            var product = new Product(100, "Test", "Test.INC", 99.99f, 10, "Electronics", "Test Description.");
+
+            // Act
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            int affectedRows = await parser.InsertRow(product);
+
+            // Assert
+            if (affectedRows != 1) Assert.Fail();
+        }
+
+        [TestMethod]
+        public async Task UpdateRow_AdminTable_OneChange()
+        {
+            // Arrange
+            string connectionFilePath = @"MySQL_connection.xml";
+            var connector = new MySQLConnector(connectionFilePath);
+            var account = new Account(1, "Admin1Update", "www.admin1update@email.com", "admin1_update_pswd", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+            // Act
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            int affectedRows = await parser.UpdateRow(SqlTable.AdminInfo, account);
+
+            // Assert
+            if (affectedRows != 1) Assert.Fail();
+        }
+
+        [TestMethod]
+        public async Task UpdateRow_UserTable_OneChange()
+        {
+            // Arrange
+            string connectionFilePath = @"MySQL_connection.xml";
+            var connector = new MySQLConnector(connectionFilePath);
+            var account = new Account(1, "User1Update", "www.user1update@email.com", "user1_update_pswd", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+            // Act
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            int affectedRows = await parser.UpdateRow(SqlTable.UserInfo, account);
+
+            // Assert
+            if (affectedRows != 1) Assert.Fail();
+        }
+
+        [TestMethod]
+        public async Task UpdateRow_ProductTable_OneChange()
+        {
+            // Arrange
+            string connectionFilePath = @"MySQL_connection.xml";
+            var connector = new MySQLConnector(connectionFilePath);
+            var product = new Product(201, "Update", "Update.INC", 0.99f, 10, "Electronics", "Update Test.");
+
+            // Act
+            var parser = new MySQLParser(connector);
+            await parser.ConnectAsync();
+            int affectedRows = await parser.UpdateRow(product);
 
             // Assert
             if (affectedRows != 1) Assert.Fail();

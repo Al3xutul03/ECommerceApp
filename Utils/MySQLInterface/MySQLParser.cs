@@ -3,9 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using Utils.DataFormats;
 
 namespace Utils.MySQLInterface
 {
@@ -72,10 +75,49 @@ namespace Utils.MySQLInterface
         public async Task<int> DeleteRow(SqlTable sqlTable, int id)
         {
             string commandString = BuildDeleteString(sqlTable, id);
+            return await ExecuteCommand(commandString);
+        }
+
+        public async Task<int> InsertRow(SqlTable accountTable, Account newAccount)
+        {
+            newAccount.id = await GetNextID(accountTable);
+
+            string commandString = BuildInsertString(accountTable, newAccount);
+            return await ExecuteCommand(commandString);
+        }
+
+        public async Task<int> InsertRow(Product newProduct)
+        {
+            newProduct.id = await GetNextID(SqlTable.ProductInfo);
+
+            string commandString = BuildInsertString(newProduct);
+            return await ExecuteCommand(commandString);
+        }
+
+        public async Task<int> UpdateRow(SqlTable accountTable, Account account)
+        {
+            string commandString = BuildUpdateString(accountTable, account);
+            return await ExecuteCommand(commandString);
+        }
+
+        public async Task<int> UpdateRow(Product product)
+        {
+            string commandString = BuildUpdateString(product);
+            return await ExecuteCommand(commandString);
+        }
+
+        private async Task<int> ExecuteCommand(string commandString)
+        {
             MySqlCommand command = new MySqlCommand(commandString, connection);
 
             int affectedRows = await command.ExecuteNonQueryAsync();
             return affectedRows;
+        }
+
+        private async Task<int> GetNextID(SqlTable sqlTable)
+        {
+            DataTable dt = await GetTable(sqlTable, null, new List<SqlColumn> { SqlColumn.ID }, SortType.Descending);
+            return (int)dt.Rows[0][0] + 1;
         }
 
         private string BuildSelectString(SqlTable sqlTable,
@@ -109,6 +151,38 @@ namespace Utils.MySQLInterface
         private string BuildDeleteString(SqlTable sqlTable, int id)
         {
             string commandString = $"DELETE FROM {tableStrings[sqlTable]} WHERE id = {id};";
+            return commandString;
+        }
+
+        private string BuildInsertString(SqlTable sqlTable, Account newAccount)
+        {
+            string commandString = $"INSERT INTO {tableStrings[sqlTable]} (id, username, email, pswd, creation_date) VALUES " +
+                $"({newAccount.id}, '{newAccount.username}', '{newAccount.email}', '{newAccount.password}', '{newAccount.creation_date}');";
+            return commandString;
+        }
+
+        private string BuildInsertString(Product newProduct)
+        {
+            string commandString = $"INSERT INTO {tableStrings[SqlTable.ProductInfo]} (id, product_name, producer, price, stock, category, product_description) VALUES " +
+                $"({newProduct.id}, '{newProduct.name}', '{newProduct.producer}', {newProduct.price.ToString(CultureInfo.InvariantCulture)}, " +
+                $"{newProduct.stock}, '{newProduct.category}', '{newProduct.description}');";
+            return commandString;
+        }
+
+        private string BuildUpdateString(SqlTable sqlTable, Account account)
+        {
+            string commandString = $"UPDATE {tableStrings[sqlTable]} SET " +
+                $"username = '{account.username}', email = '{account.email}', pswd = '{account.password}' " +
+                $"WHERE id = {account.id};";
+            return commandString;
+        }
+
+        private string BuildUpdateString(Product product)
+        {
+            string commandString = $"UPDATE {tableStrings[SqlTable.ProductInfo]} SET " +
+                $"product_name = '{product.name}', producer = '{product.producer}', price = {product.price.ToString(CultureInfo.InvariantCulture)}, " +
+                $"stock = {product.stock}, category = '{product.category}', product_description = '{product.description}' " +
+                $"WHERE id = {product.id};";
             return commandString;
         }
     }
