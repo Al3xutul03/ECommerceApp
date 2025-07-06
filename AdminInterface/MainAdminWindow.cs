@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using Utils.DataFormats;
 using Utils.MySQLInterface;
@@ -149,10 +150,15 @@ namespace AdminInterface
             lb_email.Text = string.Empty;
             lb_price.Text = string.Empty;
             lb_category.Text = string.Empty;
+
+            selectedId = -1;
+            selectedItem = null;
         }
 
         private async void btn_edit_selected_Click(object sender, EventArgs e)
         {
+            if (selectedItem == null) return;
+
             int affectedRows;
             if (selectedItem is Account)
             {
@@ -166,10 +172,24 @@ namespace AdminInterface
                     }
                 }
             }
+            else if (selectedItem is Product)
+            {
+                using (ProductWindow window = new ProductWindow((Product)selectedItem))
+                {
+                    if (window.ShowDialog() == DialogResult.OK)
+                    {
+                        affectedRows = await parser.UpdateRow(window.Product);
+                        if (affectedRows != 1) { Console.WriteLine($"Something went wrong while editing item (ID: {selectedId})"); }
+                        await SetCurrentView(currentView);
+                    }
+                }
+            }
         }
 
         private async void btn_delete_selected_Click(object sender, EventArgs e)
         {
+            if (selectedItem == null) return;
+
             int affectedRows = await parser.DeleteRow(viewToTable[currentView], selectedId);
             if (affectedRows != 1) { Console.WriteLine($"Something went wrong while deleting item (ID: {selectedId})"); }
             await SetCurrentView(currentView);
@@ -178,13 +198,26 @@ namespace AdminInterface
         private async void btn_add_item_Click(object sender, EventArgs e)
         {
             int affectedRows;
-            if (selectedItem is Account)
+            if (currentView == CurrentView.Admins ||
+                currentView == CurrentView.Users)
             {
                 using (AddAccountWindow window = new AddAccountWindow())
                 {
                     if (window.ShowDialog() == DialogResult.OK)
                     {
                         affectedRows = await parser.InsertRow(viewToTable[currentView], window.Account);
+                        if (affectedRows != 1) { Console.WriteLine($"Something went wrong while editing item (ID: {selectedId})"); }
+                        await SetCurrentView(currentView);
+                    }
+                }
+            }
+            else if (currentView == CurrentView.Products)
+            {
+                using (ProductWindow window = new ProductWindow(null))
+                {
+                    if (window.ShowDialog() == DialogResult.OK)
+                    {
+                        affectedRows = await parser.InsertRow(window.Product);
                         if (affectedRows != 1) { Console.WriteLine($"Something went wrong while editing item (ID: {selectedId})"); }
                         await SetCurrentView(currentView);
                     }

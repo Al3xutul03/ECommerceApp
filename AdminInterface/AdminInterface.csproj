@@ -64,6 +64,12 @@
     <Compile Include="AddAccountWindow.Designer.cs">
       <DependentUpon>AddAccountWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProductWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProductWindow.Designer.cs">
+      <DependentUpon>ProductWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainAdminWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AdminLoginForm.resx">
       <DependentUpon>AdminLoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProductWindow.resx">
+      <DependentUpon>ProductWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

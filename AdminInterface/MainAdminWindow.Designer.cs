@@ -65,6 +65,8 @@
             this.list_database = new System.Windows.Forms.ListBox();
             this.gb_db_options = new System.Windows.Forms.GroupBox();
             this.btn_add_item = new System.Windows.Forms.Button();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ms_app_tabs.SuspendLayout();
             this.ts_app.SuspendLayout();
             this.gb_selected.SuspendLayout();
@@ -86,6 +88,9 @@
             // 
             // tsmi_file
             // 
+            this.tsmi_file.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem});
             this.tsmi_file.Name = "tsmi_file";
             this.tsmi_file.Size = new System.Drawing.Size(46, 24);
             this.tsmi_file.Text = "File";
@@ -408,6 +413,18 @@
             this.btn_add_item.UseVisualStyleBackColor = true;
             this.btn_add_item.Click += new System.EventHandler(this.btn_add_item_Click);
             // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.importToolStripMenuItem.Text = "Import";
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
             // MainAdminWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -476,5 +493,7 @@
         private System.Windows.Forms.Label lb_price;
         private System.Windows.Forms.Label lb_category;
         private System.Windows.Forms.Label lb_category_title;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
     }
 }
