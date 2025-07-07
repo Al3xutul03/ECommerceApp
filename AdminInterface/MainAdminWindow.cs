@@ -19,8 +19,19 @@ namespace AdminInterface
         private Account loggedAccount;
         private MySQLParser parser;
         private CurrentView currentView;
+
         private int selectedId;
         private object selectedItem;
+
+        private string searchString = string.Empty;
+        private SortType sortType = SortType.None;
+
+        private Dictionary<int, SortType> sortIndexMap = new Dictionary<int, SortType>
+        {
+            { 0, SortType.None },
+            { 1, SortType.Ascending },
+            { 2, SortType.Descending }
+        };
 
         private Dictionary<CurrentView, SqlTable> viewToTable = new Dictionary<CurrentView, SqlTable>
         {
@@ -52,7 +63,11 @@ namespace AdminInterface
         {
             this.currentView = currentView;
             tsl_current_view.Text = "Current View: " + currentView.ToString();
-            itemTables[currentView] = (await parser.GetTable(viewToTable[currentView])).Rows;
+
+            SqlColumn searchColumn = (currentView == CurrentView.Admins ||
+                                      currentView == CurrentView.Users) ? SqlColumn.Username : SqlColumn.ProductName;
+            itemTables[currentView] = (await parser.GetTable(viewToTable[currentView],
+                searchString, null, new List<SqlColumn>{searchColumn}, sortType)).Rows;
 
             var bindingSource = new BindingSource();
             List<object> list = new List<object>();
@@ -263,6 +278,18 @@ namespace AdminInterface
             }
 
             selectedItem = selected;
+        }
+
+        private async void btn_search_Click(object sender, EventArgs e)
+        {
+            searchString = tb_search.Text;
+            await SetCurrentView(currentView);
+        }
+
+        private async void cb_sortby_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sortType = sortIndexMap[cb_sortby.SelectedIndex];
+            await SetCurrentView(currentView);
         }
     }
 

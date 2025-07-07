@@ -30,6 +30,8 @@
         {
             this.ms_app_tabs = new System.Windows.Forms.MenuStrip();
             this.tsmi_file = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_view = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_view_admins = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_view_users = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,11 +64,13 @@
             this.btn_edit_selected = new System.Windows.Forms.Button();
             this.btn_delete_selected = new System.Windows.Forms.Button();
             this.gb_list = new System.Windows.Forms.GroupBox();
+            this.btn_search = new System.Windows.Forms.Button();
+            this.lb_sortby = new System.Windows.Forms.Label();
+            this.cb_sortby = new System.Windows.Forms.ComboBox();
+            this.tb_search = new System.Windows.Forms.TextBox();
             this.list_database = new System.Windows.Forms.ListBox();
             this.gb_db_options = new System.Windows.Forms.GroupBox();
             this.btn_add_item = new System.Windows.Forms.Button();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ms_app_tabs.SuspendLayout();
             this.ts_app.SuspendLayout();
             this.gb_selected.SuspendLayout();
@@ -94,6 +98,18 @@
             this.tsmi_file.Name = "tsmi_file";
             this.tsmi_file.Size = new System.Drawing.Size(46, 24);
             this.tsmi_file.Text = "File";
+            // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
+            this.importToolStripMenuItem.Text = "Import";
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
+            this.exportToolStripMenuItem.Text = "Export";
             // 
             // tsmi_view
             // 
@@ -371,22 +387,66 @@
             // gb_list
             // 
             this.gb_list.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gb_list.Controls.Add(this.btn_search);
+            this.gb_list.Controls.Add(this.lb_sortby);
+            this.gb_list.Controls.Add(this.cb_sortby);
+            this.gb_list.Controls.Add(this.tb_search);
             this.gb_list.Controls.Add(this.list_database);
-            this.gb_list.Location = new System.Drawing.Point(515, 68);
+            this.gb_list.Location = new System.Drawing.Point(482, 68);
             this.gb_list.Name = "gb_list";
-            this.gb_list.Size = new System.Drawing.Size(394, 452);
+            this.gb_list.Size = new System.Drawing.Size(427, 452);
             this.gb_list.TabIndex = 2;
             this.gb_list.TabStop = false;
             this.gb_list.Text = "Database List";
+            // 
+            // btn_search
+            // 
+            this.btn_search.Location = new System.Drawing.Point(128, 34);
+            this.btn_search.Name = "btn_search";
+            this.btn_search.Size = new System.Drawing.Size(85, 26);
+            this.btn_search.TabIndex = 5;
+            this.btn_search.Text = "Search";
+            this.btn_search.UseVisualStyleBackColor = true;
+            this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
+            // 
+            // lb_sortby
+            // 
+            this.lb_sortby.AutoSize = true;
+            this.lb_sortby.Location = new System.Drawing.Point(235, 39);
+            this.lb_sortby.Name = "lb_sortby";
+            this.lb_sortby.Size = new System.Drawing.Size(56, 16);
+            this.lb_sortby.TabIndex = 4;
+            this.lb_sortby.Text = "Sort By :";
+            // 
+            // cb_sortby
+            // 
+            this.cb_sortby.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_sortby.FormattingEnabled = true;
+            this.cb_sortby.Items.AddRange(new object[] {
+            "None",
+            "Ascending",
+            "Descending"});
+            this.cb_sortby.Location = new System.Drawing.Point(306, 36);
+            this.cb_sortby.Name = "cb_sortby";
+            this.cb_sortby.Size = new System.Drawing.Size(115, 24);
+            this.cb_sortby.TabIndex = 3;
+            this.cb_sortby.SelectedIndexChanged += new System.EventHandler(this.cb_sortby_SelectedIndexChanged);
+            // 
+            // tb_search
+            // 
+            this.tb_search.Location = new System.Drawing.Point(6, 36);
+            this.tb_search.Name = "tb_search";
+            this.tb_search.Size = new System.Drawing.Size(106, 22);
+            this.tb_search.TabIndex = 1;
             // 
             // list_database
             // 
             this.list_database.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.list_database.FormattingEnabled = true;
             this.list_database.ItemHeight = 22;
-            this.list_database.Location = new System.Drawing.Point(6, 27);
+            this.list_database.Location = new System.Drawing.Point(6, 71);
             this.list_database.Name = "list_database";
-            this.list_database.Size = new System.Drawing.Size(382, 422);
+            this.list_database.Size = new System.Drawing.Size(415, 378);
             this.list_database.TabIndex = 0;
             this.list_database.SelectedIndexChanged += new System.EventHandler(this.list_database_SelectedIndexChanged);
             // 
@@ -413,18 +473,6 @@
             this.btn_add_item.UseVisualStyleBackColor = true;
             this.btn_add_item.Click += new System.EventHandler(this.btn_add_item_Click);
             // 
-            // importToolStripMenuItem
-            // 
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.importToolStripMenuItem.Text = "Import";
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.exportToolStripMenuItem.Text = "Export";
-            // 
             // MainAdminWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -448,6 +496,7 @@
             this.gb_selected.ResumeLayout(false);
             this.gb_selected.PerformLayout();
             this.gb_list.ResumeLayout(false);
+            this.gb_list.PerformLayout();
             this.gb_db_options.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -495,5 +544,9 @@
         private System.Windows.Forms.Label lb_category_title;
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.TextBox tb_search;
+        private System.Windows.Forms.ComboBox cb_sortby;
+        private System.Windows.Forms.Label lb_sortby;
+        private System.Windows.Forms.Button btn_search;
     }
 }

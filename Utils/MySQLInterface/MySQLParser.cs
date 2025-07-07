@@ -37,6 +37,13 @@ namespace Utils.MySQLInterface
             { SortType.Descending, "DESC" }
         };
 
+        private static Dictionary<SqlTable, string> searchStrings = new Dictionary<SqlTable, string>
+        {
+            { SqlTable.AdminInfo, "username" },
+            { SqlTable.UserInfo, "username"},
+            { SqlTable.ProductInfo, "product_name" }
+        };
+
         public MySQLParser(MySQLConnector connector)
         {
             this.connector = connector;
@@ -47,10 +54,10 @@ namespace Utils.MySQLInterface
             this.connection = await connector.CreateConnection();
         }
 
-        public async Task<DataTable> GetTable(SqlTable sqlTable,
+        public async Task<DataTable> GetTable(SqlTable sqlTable, string searchString,
             IEnumerable<SqlColumn> selectColumns, IEnumerable<SqlColumn> sortbyColumns, SortType sortType)
         {
-            string commandString = BuildSelectString(sqlTable, selectColumns, sortbyColumns, sortType);
+            string commandString = BuildSelectString(sqlTable, searchString, selectColumns, sortbyColumns, sortType);
             MySqlCommand command = new MySqlCommand(commandString, connection);
 
             MySqlDataReader dr = await command.ExecuteReaderAsync(CommandBehavior.Default);
@@ -62,7 +69,7 @@ namespace Utils.MySQLInterface
 
         public async Task<DataTable> GetTable(SqlTable sqlTable)
         {
-            string commandString = BuildSelectString(sqlTable, null, null, SortType.None);
+            string commandString = BuildSelectString(sqlTable, null, null, null, SortType.None);
             MySqlCommand command = new MySqlCommand(commandString, connection);
 
             MySqlDataReader dr = await command.ExecuteReaderAsync(CommandBehavior.Default);
@@ -116,11 +123,11 @@ namespace Utils.MySQLInterface
 
         private async Task<int> GetNextID(SqlTable sqlTable)
         {
-            DataTable dt = await GetTable(sqlTable, null, new List<SqlColumn> { SqlColumn.ID }, SortType.Descending);
+            DataTable dt = await GetTable(sqlTable, null, null, new List<SqlColumn> { SqlColumn.ID }, SortType.Descending);
             return (int)dt.Rows[0][0] + 1;
         }
 
-        private string BuildSelectString(SqlTable sqlTable,
+        private string BuildSelectString(SqlTable sqlTable, string searchString,
             IEnumerable<SqlColumn> selectColumns, IEnumerable<SqlColumn> sortbyColumns, SortType sortType)
         {
             string commandString = "SELECT ";
@@ -132,9 +139,14 @@ namespace Utils.MySQLInterface
                 commandString += columnStrings[enumerator.Current];
                 while (enumerator.MoveNext()) { commandString += $", {columnStrings[enumerator.Current]}"; }
             }
-
             commandString += $" FROM {tableStrings[sqlTable]} ";
-            if (sortbyColumns != null && sortbyColumns.Count() > 0)
+
+            if (searchString != null && searchString != string.Empty)
+            {
+                commandString += $"WHERE {searchStrings[sqlTable]} LIKE '%{searchString}%' ";
+            }
+
+            if (sortbyColumns != null && sortbyColumns.Count() > 0 && sortType != SortType.None)
             {
                 commandString += "ORDER BY ";
                 var enumerator = sortbyColumns.GetEnumerator();

@@ -68,6 +68,7 @@ namespace ECommerceApp.IntegrationTests
             var parser = new MySQLParser(connector);
             await parser.ConnectAsync();
             DataTable dt = await parser.GetTable(SqlTable.AdminInfo,
+                searchString: null,
                 selectColumns: new List<SqlColumn> { SqlColumn.Username, SqlColumn.ID },
                 sortbyColumns: new List<SqlColumn> { SqlColumn.Username },
                 SortType.Descending);
@@ -87,6 +88,7 @@ namespace ECommerceApp.IntegrationTests
             var parser = new MySQLParser(connector);
             await parser.ConnectAsync();
             DataTable dt = await parser.GetTable(SqlTable.UserInfo,
+                searchString: null,
                 selectColumns: new List<SqlColumn> { SqlColumn.Username },
                 sortbyColumns: new List<SqlColumn> { SqlColumn.ID },
                 SortType.Descending);
@@ -106,6 +108,7 @@ namespace ECommerceApp.IntegrationTests
             var parser = new MySQLParser(connector);
             await parser.ConnectAsync();
             DataTable dt = await parser.GetTable(SqlTable.ProductInfo,
+                searchString: null,
                 selectColumns: new List<SqlColumn> { SqlColumn.ProductName },
                 sortbyColumns: new List<SqlColumn> { SqlColumn.ID },
                 SortType.Ascending);
