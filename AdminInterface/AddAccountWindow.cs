@@ -27,10 +27,10 @@ namespace AdminInterface
         private void btn_confirm_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
-            account.username = tb_username.Text;
-            account.email = tb_email.Text;
-            account.password = tb_password.Text;
-            account.creation_date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            account.Username = tb_username.Text;
+            account.Email = tb_email.Text;
+            account.Password = tb_password.Text;
+            account.CreationDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         private void EditAccountWindow_Closing(object sender, FormClosingEventArgs e)

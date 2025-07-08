@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using Utils.DataFormats;
+using Utils.DataHandling;
 using Utils.MySQLInterface;
 
 namespace AdminInterface
@@ -90,7 +91,7 @@ namespace AdminInterface
 
         private async void MainAdminWindow_Load(object sender, EventArgs e)
         {
-            tsl_connected_as.Text += loggedAccount.username;
+            tsl_connected_as.Text += loggedAccount.Username;
 
             await SetCurrentView(CurrentView.Admins);
         }
@@ -255,26 +256,26 @@ namespace AdminInterface
             {
                 Account account = selected as Account;
 
-                lb_id.Text = account.id.ToString();
-                lb_username.Text = account.username;
-                lb_email.Text = account.email;
-                lb_creation_date.Text = account.creation_date;
+                lb_id.Text = account.Id.ToString();
+                lb_username.Text = account.Username;
+                lb_email.Text = account.Email;
+                lb_creation_date.Text = account.CreationDate;
 
-                selectedId = account.id;
+                selectedId = account.Id;
             }
             if (currentView == CurrentView.Products)
             {
                 Product product = selected as Product;
 
-                lb_id.Text = product.id.ToString();
-                lb_product_name.Text = product.name;
-                lb_producer.Text = product.producer;
-                lb_description.Text = product.description;
-                lb_category.Text = product.category;
-                lb_price.Text = product.price.ToString();
-                lb_available_stock.Text = product.stock.ToString();
+                lb_id.Text = product.Id.ToString();
+                lb_product_name.Text = product.Name;
+                lb_producer.Text = product.Producer;
+                lb_description.Text = product.Description;
+                lb_category.Text = product.Category;
+                lb_price.Text = product.Price.ToString();
+                lb_available_stock.Text = product.Stock.ToString();
 
-                selectedId = product.id;
+                selectedId = product.Id;
             }
 
             selectedItem = selected;
@@ -290,6 +291,41 @@ namespace AdminInterface
         {
             sortType = sortIndexMap[cb_sortby.SelectedIndex];
             await SetCurrentView(currentView);
+        }
+
+        private async void tsmi_export_Click(object sender, EventArgs e)
+        {
+            using (ExportWindow window = new ExportWindow())
+            {
+                if (window.ShowDialog() == DialogResult.OK)
+                {
+                    var collection = (await parser.GetTable(window.Table)).Rows;
+
+                    List<object> list = new List<object>();
+                    foreach (DataRow row in collection)
+                    {
+                        switch (window.Table)
+                        {
+                            case SqlTable.AdminInfo: list.Add(new Account(row)); break;
+                            case SqlTable.UserInfo: list.Add(new Account(row)); break;
+                            case SqlTable.ProductInfo: list.Add(new Product(row)); break;
+                            default: break;
+                        }
+                    }
+
+                    Type type = typeof(Account);
+                    switch (window.Table)
+                    {
+                        case SqlTable.AdminInfo: type = typeof(Account); break;
+                        case SqlTable.UserInfo: type = typeof(Account); break;
+                        case SqlTable.ProductInfo: type = typeof(Product); break;
+                        default: break;
+                    }
+
+                    var exporter = new DataExporter(type, list);
+                    exporter.ExportData(window.FilePath, window.TransferType, window.Table);
+                }
+            }
         }
     }
 

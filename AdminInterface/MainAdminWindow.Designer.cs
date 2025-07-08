@@ -30,8 +30,7 @@
         {
             this.ms_app_tabs = new System.Windows.Forms.MenuStrip();
             this.tsmi_file = new System.Windows.Forms.ToolStripMenuItem();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_export = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_view = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_view_admins = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmi_view_users = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,23 +92,17 @@
             // tsmi_file
             // 
             this.tsmi_file.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.importToolStripMenuItem,
-            this.exportToolStripMenuItem});
+            this.tsmi_export});
             this.tsmi_file.Name = "tsmi_file";
             this.tsmi_file.Size = new System.Drawing.Size(46, 24);
             this.tsmi_file.Text = "File";
             // 
-            // importToolStripMenuItem
+            // tsmi_export
             // 
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
-            this.importToolStripMenuItem.Text = "Import";
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
-            this.exportToolStripMenuItem.Text = "Export";
+            this.tsmi_export.Name = "tsmi_export";
+            this.tsmi_export.Size = new System.Drawing.Size(224, 26);
+            this.tsmi_export.Text = "Export";
+            this.tsmi_export.Click += new System.EventHandler(this.tsmi_export_Click);
             // 
             // tsmi_view
             // 
@@ -542,8 +535,7 @@
         private System.Windows.Forms.Label lb_price;
         private System.Windows.Forms.Label lb_category;
         private System.Windows.Forms.Label lb_category_title;
-        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_export;
         private System.Windows.Forms.TextBox tb_search;
         private System.Windows.Forms.ComboBox cb_sortby;
         private System.Windows.Forms.Label lb_sortby;

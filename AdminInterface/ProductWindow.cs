@@ -23,12 +23,12 @@ namespace AdminInterface
 
             if (product != null)
             {
-                tb_name.Text = product.name;
-                tb_producer.Text = product.producer;
-                nud_price.Value = (decimal)product.price;
-                nud_stock.Value = product.stock;
-                tb_category.Text = product.category;
-                rtb_description.Text = product.description;
+                tb_name.Text = product.Name;
+                tb_producer.Text = product.Producer;
+                nud_price.Value = (decimal)product.Price;
+                nud_stock.Value = product.Stock;
+                tb_category.Text = product.Category;
+                rtb_description.Text = product.Description;
             }
 
             this.product = product;
@@ -40,12 +40,12 @@ namespace AdminInterface
 
             if (this.product != null)
             {
-                product.name = tb_name.Text;
-                product.producer = tb_producer.Text;
-                product.price = (float)nud_price.Value;
-                product.stock = (int)nud_stock.Value;
-                product.category = tb_category.Text;
-                product.description = rtb_description.Text;
+                product.Name = tb_name.Text;
+                product.Producer = tb_producer.Text;
+                product.Price = (float)nud_price.Value;
+                product.Stock = (int)nud_stock.Value;
+                product.Category = tb_category.Text;
+                product.Description = rtb_description.Text;
             }
             else
             {

@@ -55,7 +55,7 @@ namespace UserInterface
             foreach (DataRow row in userTable.Rows)
             {
                 var account = new Account(row);
-                if (account.username == username)
+                if (account.Username == username)
                 {
                     exists = true;
                 }

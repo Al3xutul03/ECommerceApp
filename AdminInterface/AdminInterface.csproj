@@ -64,6 +64,12 @@
     <Compile Include="AddAccountWindow.Designer.cs">
       <DependentUpon>AddAccountWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExportWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExportWindow.Designer.cs">
+      <DependentUpon>ExportWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditAccountWindow.resx">
       <DependentUpon>EditAccountWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExportWindow.resx">
+      <DependentUpon>ExportWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainAdminWindow.resx">
       <DependentUpon>MainAdminWindow.cs</DependentUpon>

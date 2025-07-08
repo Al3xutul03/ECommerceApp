@@ -87,7 +87,7 @@ namespace Utils.MySQLInterface
 
         public async Task<int> InsertRow(SqlTable accountTable, Account newAccount)
         {
-            newAccount.id = await GetNextID(accountTable);
+            newAccount.Id = await GetNextID(accountTable);
 
             string commandString = BuildInsertString(accountTable, newAccount);
             return await ExecuteCommand(commandString);
@@ -95,7 +95,7 @@ namespace Utils.MySQLInterface
 
         public async Task<int> InsertRow(Product newProduct)
         {
-            newProduct.id = await GetNextID(SqlTable.ProductInfo);
+            newProduct.Id = await GetNextID(SqlTable.ProductInfo);
 
             string commandString = BuildInsertString(newProduct);
             return await ExecuteCommand(commandString);
@@ -169,32 +169,32 @@ namespace Utils.MySQLInterface
         private string BuildInsertString(SqlTable sqlTable, Account newAccount)
         {
             string commandString = $"INSERT INTO {tableStrings[sqlTable]} (id, username, email, pswd, creation_date) VALUES " +
-                $"({newAccount.id}, '{newAccount.username}', '{newAccount.email}', '{newAccount.password}', '{newAccount.creation_date}');";
+                $"({newAccount.Id}, '{newAccount.Username}', '{newAccount.Email}', '{newAccount.Password}', '{newAccount.CreationDate}');";
             return commandString;
         }
 
         private string BuildInsertString(Product newProduct)
         {
             string commandString = $"INSERT INTO {tableStrings[SqlTable.ProductInfo]} (id, product_name, producer, price, stock, category, product_description) VALUES " +
-                $"({newProduct.id}, '{newProduct.name}', '{newProduct.producer}', {newProduct.price.ToString(CultureInfo.InvariantCulture)}, " +
-                $"{newProduct.stock}, '{newProduct.category}', '{newProduct.description}');";
+                $"({newProduct.Id}, '{newProduct.Name}', '{newProduct.Producer}', {newProduct.Price.ToString(CultureInfo.InvariantCulture)}, " +
+                $"{newProduct.Stock}, '{newProduct.Category}', '{newProduct.Description}');";
             return commandString;
         }
 
         private string BuildUpdateString(SqlTable sqlTable, Account account)
         {
             string commandString = $"UPDATE {tableStrings[sqlTable]} SET " +
-                $"username = '{account.username}', email = '{account.email}', pswd = '{account.password}' " +
-                $"WHERE id = {account.id};";
+                $"username = '{account.Username}', email = '{account.Email}', pswd = '{account.Password}' " +
+                $"WHERE id = {account.Id};";
             return commandString;
         }
 
         private string BuildUpdateString(Product product)
         {
             string commandString = $"UPDATE {tableStrings[SqlTable.ProductInfo]} SET " +
-                $"product_name = '{product.name}', producer = '{product.producer}', price = {product.price.ToString(CultureInfo.InvariantCulture)}, " +
-                $"stock = {product.stock}, category = '{product.category}', product_description = '{product.description}' " +
-                $"WHERE id = {product.id};";
+                $"product_name = '{product.Name}', producer = '{product.Producer}', price = {product.Price.ToString(CultureInfo.InvariantCulture)}, " +
+                $"stock = {product.Stock}, category = '{product.Category}', product_description = '{product.Description}' " +
+                $"WHERE id = {product.Id};";
             return commandString;
         }
     }

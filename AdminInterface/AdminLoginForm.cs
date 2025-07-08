@@ -42,8 +42,8 @@ namespace AdminInterface
             foreach ( DataRow row in adminTable.Rows )
             {
                 var account = new Account(row);
-                if (account.username == username &&
-                    account.password == password)
+                if (account.Username == username &&
+                    account.Password == password)
                 {
                     exists = true;
                     loggedAccount = account;

@@ -23,15 +23,15 @@ namespace AdminInterface
 
             this.account = account;
 
-            tb_username.Text = account.username;
-            tb_email.Text = account.email;
+            tb_username.Text = account.Username;
+            tb_email.Text = account.Email;
         }
 
         private void btn_confirm_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
-            account.username = tb_username.Text;
-            account.email = tb_email.Text;
+            account.Username = tb_username.Text;
+            account.Email = tb_email.Text;
         }
 
         private void EditAccountWindow_Closing(object sender, FormClosingEventArgs e)
