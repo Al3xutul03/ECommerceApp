@@ -137,7 +137,7 @@ namespace UserInterface
             // 
             this.lb_go_back.AutoSize = true;
             this.lb_go_back.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lb_go_back.Location = new System.Drawing.Point(70, 366);
+            this.lb_go_back.Location = new System.Drawing.Point(59, 366);
             this.lb_go_back.Name = "lb_go_back";
             this.lb_go_back.Size = new System.Drawing.Size(162, 16);
             this.lb_go_back.TabIndex = 8;
@@ -160,9 +160,9 @@ namespace UserInterface
             // btn_signup
             // 
             this.btn_signup.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_signup.Location = new System.Drawing.Point(288, 318);
+            this.btn_signup.Location = new System.Drawing.Point(283, 318);
             this.btn_signup.Name = "btn_signup";
-            this.btn_signup.Size = new System.Drawing.Size(75, 23);
+            this.btn_signup.Size = new System.Drawing.Size(80, 25);
             this.btn_signup.TabIndex = 6;
             this.btn_signup.Text = "Sign Up";
             this.btn_signup.UseVisualStyleBackColor = true;

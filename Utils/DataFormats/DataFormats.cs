@@ -100,7 +100,7 @@ namespace Utils.DataFormats
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            if (!(obj is Account)) return false;
+            if (!(obj is Product)) return false;
             Product other = (Product)obj;
             return this.Id == other.Id &&
                    this.Name == other.Name &&

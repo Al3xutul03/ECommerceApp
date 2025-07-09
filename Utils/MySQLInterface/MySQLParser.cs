@@ -54,10 +54,10 @@ namespace Utils.MySQLInterface
             this.connection = await connector.CreateConnection();
         }
 
-        public async Task<DataTable> GetTable(SqlTable sqlTable, string searchString,
+        public async Task<DataTable> GetTable(SqlTable sqlTable, string searchString, string categoryString,
             IEnumerable<SqlColumn> selectColumns, IEnumerable<SqlColumn> sortbyColumns, SortType sortType)
         {
-            string commandString = BuildSelectString(sqlTable, searchString, selectColumns, sortbyColumns, sortType);
+            string commandString = BuildSelectString(sqlTable, searchString, categoryString, selectColumns, sortbyColumns, sortType);
             MySqlCommand command = new MySqlCommand(commandString, connection);
 
             MySqlDataReader dr = await command.ExecuteReaderAsync(CommandBehavior.Default);
@@ -69,7 +69,7 @@ namespace Utils.MySQLInterface
 
         public async Task<DataTable> GetTable(SqlTable sqlTable)
         {
-            string commandString = BuildSelectString(sqlTable, null, null, null, SortType.None);
+            string commandString = BuildSelectString(sqlTable, null, null, null, null, SortType.None);
             MySqlCommand command = new MySqlCommand(commandString, connection);
 
             MySqlDataReader dr = await command.ExecuteReaderAsync(CommandBehavior.Default);
@@ -123,11 +123,11 @@ namespace Utils.MySQLInterface
 
         private async Task<int> GetNextID(SqlTable sqlTable)
         {
-            DataTable dt = await GetTable(sqlTable, null, null, new List<SqlColumn> { SqlColumn.ID }, SortType.Descending);
+            DataTable dt = await GetTable(sqlTable, null, null, null, new List<SqlColumn> { SqlColumn.ID }, SortType.Descending);
             return (int)dt.Rows[0][0] + 1;
         }
 
-        private string BuildSelectString(SqlTable sqlTable, string searchString,
+        private string BuildSelectString(SqlTable sqlTable, string searchString, string categoryString,
             IEnumerable<SqlColumn> selectColumns, IEnumerable<SqlColumn> sortbyColumns, SortType sortType)
         {
             string commandString = "SELECT ";
@@ -141,9 +141,14 @@ namespace Utils.MySQLInterface
             }
             commandString += $" FROM {tableStrings[sqlTable]} ";
 
-            if (searchString != null && searchString != string.Empty)
+            string finalSearchString;
+            if (searchString == null) finalSearchString = string.Empty;
+            else finalSearchString = searchString;
+            commandString += $"WHERE {searchStrings[sqlTable]} LIKE '%{searchString}%' ";
+
+            if (categoryString != null && categoryString != string.Empty)
             {
-                commandString += $"WHERE {searchStrings[sqlTable]} LIKE '%{searchString}%' ";
+                commandString += $"AND category = '{categoryString}' ";
             }
 
             if (sortbyColumns != null && sortbyColumns.Count() > 0 && sortType != SortType.None)

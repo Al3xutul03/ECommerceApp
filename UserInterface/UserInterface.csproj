@@ -46,11 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="SuccessWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="SuccessWindow.Designer.cs">
+      <DependentUpon>SuccessWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainUserWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainUserWindow.Designer.cs">
+      <DependentUpon>MainUserWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="UserLoginForm.cs">
       <SubType>Form</SubType>
@@ -66,8 +72,11 @@
     <Compile Include="RegisterForm.Designer.cs">
       <DependentUpon>RegisterForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="SuccessWindow.resx">
+      <DependentUpon>SuccessWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainUserWindow.resx">
+      <DependentUpon>MainUserWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserLoginForm.resx">
       <DependentUpon>UserLoginForm.cs</DependentUpon>

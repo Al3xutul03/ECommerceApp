@@ -17,6 +17,8 @@ namespace UserInterface
     {
         private MySQLParser parser;
 
+        public Account Account { get; private set; }
+
         private Dictionary<Error, Label> errors = new Dictionary<Error, Label>();
 
         public RegisterForm(MySQLParser parser)
@@ -41,6 +43,7 @@ namespace UserInterface
             string username = tb_username.Text;
             string password = tb_password.Text;
             string confirmPassword = tb_confirm_password.Text;
+            string email = tb_email.Text;
 
             this.HideErrors();
             if (password != confirmPassword)
@@ -49,6 +52,7 @@ namespace UserInterface
                 return;
             }
 
+            await parser.ConnectAsync();
             DataTable userTable = await parser.GetTable(SqlTable.UserInfo);
 
             bool exists = false;
@@ -67,7 +71,10 @@ namespace UserInterface
                 return;
             }
 
-            // Implement Account Creation Later
+            Account newAccount = new Account(0, username, email, password, DateTime.Now.ToString("yyyy-MM-dd"));
+            await parser.InsertRow(SqlTable.UserInfo, newAccount);
+            Account = newAccount;
+            this.DialogResult = DialogResult.OK;
         }
 
         private void linklb_go_back_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

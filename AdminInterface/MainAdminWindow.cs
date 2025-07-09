@@ -68,7 +68,7 @@ namespace AdminInterface
             SqlColumn searchColumn = (currentView == CurrentView.Admins ||
                                       currentView == CurrentView.Users) ? SqlColumn.Username : SqlColumn.ProductName;
             itemTables[currentView] = (await parser.GetTable(viewToTable[currentView],
-                searchString, null, new List<SqlColumn>{searchColumn}, sortType)).Rows;
+                searchString, null, null, new List<SqlColumn>{searchColumn}, sortType)).Rows;
 
             var bindingSource = new BindingSource();
             List<object> list = new List<object>();

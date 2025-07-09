@@ -18,6 +18,9 @@ namespace UserInterface
         private MySQLConnector connector;
         private MySQLParser parser;
 
+        public Account Account { get; private set; }
+        public MySQLParser Parser { get { return parser; } }
+
         public UserLoginForm()
         {
             InitializeComponent();
@@ -35,6 +38,7 @@ namespace UserInterface
             DataTable adminTable = await parser.GetTable(SqlTable.UserInfo);
 
             bool exists = false;
+            Account wantedAccount = null;
             foreach ( DataRow row in adminTable.Rows )
             {
                 var account = new Account(row);
@@ -42,13 +46,14 @@ namespace UserInterface
                     account.Password == password)
                 {
                     exists = true;
+                    wantedAccount = account;
                 }
             }
 
             if (exists)
             {
                 this.DialogResult = DialogResult.OK;
-                this.Close();
+                Account = wantedAccount;
             }
             else
             {
@@ -70,12 +75,14 @@ namespace UserInterface
             {
                 this.Hide();
                 DialogResult result = registerForm.ShowDialog();
-                this.Show();
-
                 if (result == DialogResult.OK)
                 {
                     this.DialogResult = result;
-                    this.Close();
+                    this.Account = registerForm.Account;
+                }
+                else
+                {
+                    this.Show();
                 }
             }
         }

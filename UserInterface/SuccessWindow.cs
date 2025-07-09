@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace UserInterface
 {
-    public partial class Form1 : Form
+    public partial class SuccessWindow : Form
     {
-        public Form1()
+        public SuccessWindow()
         {
             InitializeComponent();
         }

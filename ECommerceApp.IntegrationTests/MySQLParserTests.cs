@@ -69,6 +69,7 @@ namespace ECommerceApp.IntegrationTests
             await parser.ConnectAsync();
             DataTable dt = await parser.GetTable(SqlTable.AdminInfo,
                 searchString: null,
+                categoryString: null,
                 selectColumns: new List<SqlColumn> { SqlColumn.Username, SqlColumn.ID },
                 sortbyColumns: new List<SqlColumn> { SqlColumn.Username },
                 SortType.Descending);
@@ -89,6 +90,7 @@ namespace ECommerceApp.IntegrationTests
             await parser.ConnectAsync();
             DataTable dt = await parser.GetTable(SqlTable.UserInfo,
                 searchString: null,
+                categoryString: null,
                 selectColumns: new List<SqlColumn> { SqlColumn.Username },
                 sortbyColumns: new List<SqlColumn> { SqlColumn.ID },
                 SortType.Descending);
@@ -109,6 +111,7 @@ namespace ECommerceApp.IntegrationTests
             await parser.ConnectAsync();
             DataTable dt = await parser.GetTable(SqlTable.ProductInfo,
                 searchString: null,
+                categoryString: null,
                 selectColumns: new List<SqlColumn> { SqlColumn.ProductName },
                 sortbyColumns: new List<SqlColumn> { SqlColumn.ID },
                 SortType.Ascending);

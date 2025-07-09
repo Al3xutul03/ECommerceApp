@@ -62,7 +62,7 @@
             // 
             this.linklb_register.AutoSize = true;
             this.linklb_register.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linklb_register.Location = new System.Drawing.Point(225, 181);
+            this.linklb_register.Location = new System.Drawing.Point(232, 181);
             this.linklb_register.Name = "linklb_register";
             this.linklb_register.Size = new System.Drawing.Size(106, 16);
             this.linklb_register.TabIndex = 9;
@@ -74,7 +74,7 @@
             // 
             this.lb_register.AutoSize = true;
             this.lb_register.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lb_register.Location = new System.Drawing.Point(73, 181);
+            this.lb_register.Location = new System.Drawing.Point(63, 181);
             this.lb_register.Name = "lb_register";
             this.lb_register.Size = new System.Drawing.Size(146, 16);
             this.lb_register.TabIndex = 8;

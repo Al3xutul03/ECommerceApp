@@ -23,7 +23,7 @@ namespace UserInterface
             {
                 if (loginForm.ShowDialog() == DialogResult.OK)
                 {
-                    Application.Run(new Form1());
+                    Application.Run(new MainUserWindow(loginForm.Account, loginForm.Parser));
                 }
             }
         }
