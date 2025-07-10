@@ -175,7 +175,7 @@ namespace AdminInterface
         {
             if (selectedItem == null) return;
 
-            int affectedRows;
+            int affectedRows = 0;
             if (selectedItem is Account)
             {
                 using (EditAccountWindow window = new EditAccountWindow((Account)selectedItem))
@@ -183,8 +183,6 @@ namespace AdminInterface
                     if (window.ShowDialog() == DialogResult.OK)
                     {
                         affectedRows = await parser.UpdateRow(viewToTable[currentView], window.Account);
-                        if (affectedRows != 1) { Console.WriteLine($"Something went wrong while editing item (ID: {selectedId})"); }
-                        await SetCurrentView(currentView);
                     }
                 }
             }
@@ -195,11 +193,11 @@ namespace AdminInterface
                     if (window.ShowDialog() == DialogResult.OK)
                     {
                         affectedRows = await parser.UpdateRow(window.Product);
-                        if (affectedRows != 1) { Console.WriteLine($"Something went wrong while editing item (ID: {selectedId})"); }
-                        await SetCurrentView(currentView);
                     }
                 }
             }
+            if (affectedRows != 1) { Console.WriteLine($"Something went wrong while editing item (ID: {selectedId})"); }
+            await SetCurrentView(currentView);
         }
 
         private async void btn_delete_selected_Click(object sender, EventArgs e)
